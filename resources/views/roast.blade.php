@@ -7,47 +7,62 @@
     @vite('resources/css/app.css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-<body class="min-h-screen bg-gradient-to-br from-yellow-500 via-orange-700 to-red-800 text-white p-8">
-    <div class="max-w-4xl mx-auto">
-        <div class="flex items-center justify-center gap-4 mb-8">
-            <h1 class="text-4xl font-bold">Gordon's Resume Roast</h1>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://i.postimg.cc/63bGh3fT/logosticker.png" alt="TORC Logo" class="header-logo">
+            <h1>TORC'S RESUME ROAST</h1>
+            <p>Live from Laracon!</p>
         </div>
-        
-        <div class="bg-white/10 backdrop-blur-lg rounded-lg p-6 mb-8 shadow-lg">
-            <div class="mb-4">
-                <label class="block text-lg mb-2">Paste Your Resume Here, YOU DONKEY!</label>
-                <textarea
-                    id="resumeText"
-                    class="w-full h-64 p-4 bg-white/5 rounded-lg border border-red-400 text-white placeholder-red-300"
-                    placeholder="Paste your resume content here... AND MAKE IT GOOD!"
-                ></textarea>
+
+        <div class="form-container">
+            <div class="tab-nav">
+                <button id="paste-tab" class="tab-button active">Copy & Paste</button>
+                <button id="upload-tab" class="tab-button">Upload PDF</button>
             </div>
-            
-            <div class="flex gap-4">
-                <button id="roastButton" class="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-bold transition-colors">
-                    ROAST IT!
-                </button>
-                <button id="clearButton" class="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
-                    Clear
-                </button>
+
+            <div id="paste-content" class="tab-content">
+                <label for="resumeText">Paste Your Resume Here, YOU DONKEY!</label>
+                <textarea id="resumeText" placeholder="Paste your resume content here... AND MAKE IT GOOD!"></textarea>
+            </div>
+
+            <div id="upload-content" class="tab-content" style="display: none;">
+                <label for="resumeFile">Upload Your Resume PDF, YOU DONKEY!</label>
+                <input type="file" id="resumeFile" accept=".pdf" />
+            </div>
+
+            <div class="button-group">
+                <button id="roastButton">ROAST IT!</button>
             </div>
         </div>
 
-        <div id="feedback" class="bg-white/10 backdrop-blur-lg rounded-lg p-6 hidden">
-            <h2 class="text-2xl font-bold mb-4">The Dish</h2>
-            <div id="feedbackContent" class="space-y-4"></div>
-            <div id="rating" class="mt-8 text-center hidden">
-                <div id="ratingText" class="text-xl font-bold mb-4"></div>
-                <div class="max-w-sm mx-auto">
-                    <img id="ratingGif" src="" alt="Gordon's Reaction" class="w-full rounded-lg shadow-lg" />
-                </div>
-            </div>
+        <div id="loading" class="loading-indicator" style="display: none;">
+            <div class="spinner"></div>
+            <p>Whipping up a storm...</p>
         </div>
-        
-        <footer class="mt-8 text-center text-sm text-red-300">
-            <p>Disclaimer: This is a parody app. Gordon Ramsay isn't actually reviewing your resume, you donut, 🍩 its me Jason Torres 2025 &copy;</p>
-        </footer>
+
+        <div id="feedback" class="feedback-container" style="display: none;">
+             <p style="text-align: center; font-size: 1.25rem; color: #4ade80;">Your roast has been served on the main screen!</p>
+        </div>
+
+        <div class="qr-code-container">
+            <p>Scan to participate!</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ url('/') }}" alt="QR Code">
+        </div>
+
     </div>
+
+    <footer class="footer">
+        <p>Built with <a href="https://laravel.com" target="_blank" rel="noopener noreferrer">Laravel</a> for <a href="https://torc.dev" target="_blank" rel="noopener noreferrer">Torc</a> by Jason Torres &copy; 2025</p>
+    </footer>
+
+    <!-- Audio files for sound effects -->
+    <audio id="sound-terrible" src="/audio/terrible.mp3"></audio>
+    <audio id="sound-bad" src="/audio/bad.mp3"></audio>
+    <audio id="sound-average" src="/audio/average.mp3"></audio>
+    <audio id="sound-good" src="/audio/good.mp3"></audio>
+    <audio id="sound-excellent" src="/audio/excellent.mp3"></audio>
+
     @vite('resources/js/app.js')
 </body>
 </html>
