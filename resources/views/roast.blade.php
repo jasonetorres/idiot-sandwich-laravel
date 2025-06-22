@@ -15,7 +15,32 @@
             <p>Live from Laracon!</p>
         </div>
 
-        <div class="form-container">
+        <!-- Step 1: Lead Capture Form (Visible by default) -->
+        <div id="lead-capture-section">
+            <div id="lead-capture-form">
+                <h2>Get Your Resume Roasted!</h2>
+                <p style="text-align: center; margin-bottom: 1.5rem; color: #9ca3af;">Enter your info to unlock the uploader.</p>
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="job_title">Job Title (Optional)</label>
+                    <input type="text" id="job_title" name="job_title">
+                </div>
+                <div class="button-group">
+                    <button id="submit-lead-button">Submit & Continue</button>
+                </div>
+                 <p id="lead-error" style="color: #ef4444; text-align: center; margin-top: 1rem; display: none;"></p>
+            </div>
+        </div>
+
+        <!-- Step 2: Resume Uploader (Hidden by default) -->
+        <div id="roast-section" class="form-container" style="display: none;">
             <div class="tab-nav">
                 <button id="paste-tab" class="tab-button active">Copy & Paste</button>
                 <button id="upload-tab" class="tab-button">Upload PDF</button>
@@ -44,16 +69,10 @@
         <div id="feedback" class="feedback-container" style="display: none;">
              <p style="text-align: center; font-size: 1.25rem; color: #4ade80;">Your roast has been served on the main screen!</p>
         </div>
-
-        <div class="qr-code-container">
-            <p>Scan to participate!</p>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ url('/') }}" alt="QR Code">
-        </div>
-
     </div>
 
     <footer class="footer">
-        <p>Built with <a href="https://laravel.com" target="_blank" rel="noopener noreferrer">Laravel</a> for <a href="https://torc.dev" target="_blank" rel="noopener noreferrer">Torc</a> by Jason Torres &copy; 2025</p>
+        <p>Built with <a href="https://laravel.com" target="_blank" rel="noopener noreferrer">Laravel</a> for <a href="https://torc.dev" target="_blank" rel="noopener noreferrer">TORC</a> by Jason Torres &copy; 2025</p>
     </footer>
 
     <!-- Audio files for sound effects -->

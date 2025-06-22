@@ -411,3 +411,67 @@ body.monitor-page .container {
 .footer a:hover {
     text-decoration: underline;
 }
+#lead-capture-form {
+    background-color: #1a1a1a;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    border: 1px solid #444;
+}
+#lead-capture-form h2 {
+    text-align: center;
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: #0044ff;
+}
+.form-group {
+    margin-bottom: 1.5rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+.form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: #000;
+    border: 1px solid #333;
+    border-radius: 0.5rem;
+    color: white;
+}
+#submit-lead-button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    background-color: #0044ff;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+/* Styles for the QR code on the monitor */
+.initial-monitor-state {
+    text-align: center;
+    color: #6b7280;
+}
+
+.qr-code-container-monitor {
+    margin-bottom: 2rem;
+}
+.qr-code-container-monitor p {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+.qr-code-container-monitor img {
+    background: white;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+.initial-monitor-state h2 {
+    font-size: 2rem;
+    font-style: italic;
+}

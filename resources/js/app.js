@@ -1,15 +1,17 @@
 import './bootstrap';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Elements for Lead Capture ---
+    const leadCaptureSection = document.getElementById('lead-capture-section');
+    const submitLeadButton = document.getElementById('submit-lead-button');
+    const leadError = document.getElementById('lead-error');
+    
     // --- Elements for the submission form (`roast.blade.php`) ---
+    const roastSection = document.getElementById('roast-section');
     const roastButton = document.getElementById('roastButton');
     const resumeText = document.getElementById('resumeText');
     const resumeFile = document.getElementById('resumeFile');
     const feedbackDiv = document.getElementById('feedback');
-    const feedbackContent = document.getElementById('feedbackContent');
-    const ratingDiv = document.getElementById('rating');
-    const ratingText = document.getElementById('ratingText');
-    const ratingGif = document.getElementById('ratingGif');
     const loadingDiv = document.getElementById('loading');
     const pasteTab = document.getElementById('paste-tab');
     const uploadTab = document.getElementById('upload-tab');
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Elements for the real-time monitor (`monitor.blade.php`) ---
     const liveRoasts = document.getElementById('live-roasts');
 
-    // --- Helper Functions ---
+    // --- Helper Functions (GORDON_GIFS, etc.) remain the same ---
     const GORDON_GIFS = {
         terrible: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDZ6dGFiaXRqc3JqMWxwc3FzajV1c2w1a3FtcHl0bDIwaWMxZXE2YSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o85g2ttYzgw6o661q/giphy.gif",
         bad: "https://media.giphy.com/media/2kMQiSEW6Wkyh3YltH/giphy.gif?cid=790b7611s7gt5ui8e5zcyfzgqwyb8hib4o7liwbpo9hc1eg4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
@@ -44,14 +46,47 @@ document.addEventListener('DOMContentLoaded', () => {
         if (rating <= 4) return "NOW THAT'S MORE LIKE IT!";
         return "ABSOLUTELY BRILLIANT!";
     };
+    
+    // --- Logic for Lead Capture Submission ---
+    if (submitLeadButton) {
+        submitLeadButton.addEventListener('click', async () => {
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const jobTitleInput = document.getElementById('job_title');
+            
+            if (!nameInput.value || !emailInput.value) {
+                leadError.textContent = "Name and Email are required, you donut!";
+                leadError.style.display = 'block';
+                return;
+            }
 
-    const playSoundByRating = (rating) => {
-        if (rating <= 1) document.getElementById('sound-terrible')?.play();
-        if (rating === 2) document.getElementById('sound-bad')?.play();
-        if (rating === 3) document.getElementById('sound-average')?.play();
-        if (rating === 4) document.getElementById('sound-good')?.play();
-        if (rating === 5) document.getElementById('sound-excellent')?.play();
-    };
+            const formData = new FormData();
+            formData.append('name', nameInput.value);
+            formData.append('email', emailInput.value);
+            formData.append('job_title', jobTitleInput.value);
+            
+            try {
+                const response = await fetch('/leads', {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    leadCaptureSection.style.display = 'none';
+                    roastSection.style.display = 'block';
+                } else {
+                     leadError.textContent = "Something went wrong. Please try again.";
+                     leadError.style.display = 'block';
+                }
+            } catch (error) {
+                console.error("Lead submission error:", error);
+                leadError.textContent = "Could not connect to the server. Please check your connection.";
+                leadError.style.display = 'block';
+            }
+        });
+    }
 
     // --- Main function to handle the form submission ---
     const roastResume = async () => {
@@ -75,8 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (loadingDiv) loadingDiv.style.display = 'block';
+        if (roastSection) roastSection.style.display = 'none'; // Hide the form while loading
         if (feedbackDiv) feedbackDiv.style.display = 'none';
-        if (roastButton) roastButton.disabled = true;
 
         try {
             const response = await fetch('/roast', {
@@ -84,26 +119,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: headers,
                 body: formData
             });
-            const data = await response.json();
-
-            if (data.error) {
-                if (feedbackContent) feedbackContent.innerHTML = `<div class="error-message">${data.error}</div>`;
-            } else {
-                // This logic is for displaying feedback on the submission page, which we've hidden for now
-                // but we'll leave it in case you want to re-enable it later.
-            }
-
+            await response.json(); // We don't need the data on this page, but we wait for the response
+            
+            // Show a success message
             if (feedbackDiv) feedbackDiv.style.display = 'block';
+
         } catch (error) {
             console.error('An error occurred in the roastResume function:', error);
-            if (feedbackContent) feedbackContent.innerHTML = `<div class="error-message">The kitchen is in chaos! Something went wrong.</div>`;
-            if (feedbackDiv) feedbackDiv.style.display = 'block';
+            alert("The kitchen is in chaos! Something went wrong.");
         } finally {
             if (loadingDiv) loadingDiv.style.display = 'none';
-            if (roastButton) roastButton.disabled = false;
+            // Don't re-show the roast section, just the feedback.
         }
     };
-
+    
     // --- Logic for the SUBMISSION FORM (`roast.blade.php`) ---
     if (roastButton) {
         roastButton.addEventListener('click', roastResume);
@@ -125,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
     // --- Logic for the REAL-TIME MONITOR (`monitor.blade.php`) ---
     if (liveRoasts) {
         window.Echo.channel('roasts')
@@ -136,8 +166,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const gifUrl = getGifByRating(extractedRating);
 
                 let animationClass = 'fade-in';
-                if (extractedRating === 1) animationClass = 'fiery-flash';
-                if (extractedRating === 5) animationClass = 'golden-glow';
+                let prizeBannerHtml = ''; 
+
+                if (extractedRating === 1) {
+                    animationClass = 'fiery-flash';
+                    prizeBannerHtml = `<div class="prize-banner prize-banner-idiot">Idiot Sandwich Award!</div>`;
+                } else if (extractedRating === 5) {
+                    animationClass = 'golden-glow';
+                    prizeBannerHtml = `<div class="prize-banner prize-banner-gold">Golden Resume Winner!</div>`;
+                }
 
                 let starsHtml = '';
                 for (let i = 1; i <= 5; i++) {
@@ -147,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const newRoastHtml = `
                     <div class="report-card ${animationClass}">
+                        ${prizeBannerHtml}
                         <div class="report-card-content">
                             <div class="report-card-media">
                                 <img src="${gifUrl}" alt="Gordon's Reaction">
@@ -169,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
 
-                liveRoasts.insertAdjacentHTML('afterbegin', newRoastHtml);
+                liveRoasts.innerHTML = newRoastHtml;
             });
     }
 });
