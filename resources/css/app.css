@@ -72,8 +72,8 @@
     border: none;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
+    border-bottom: 2.5px solid transparent; /* Slightly increased for visibility */
+    margin-bottom: -2.5px; /* Adjust margin to compensate */
 }
 
 .tab-button.active {
@@ -411,11 +411,15 @@ body.monitor-page .container {
 .footer a:hover {
     text-decoration: underline;
 }
+
+/* Lead Capture Section */
 #lead-capture-form {
     background-color: #1a1a1a;
     padding: 2rem;
     border-radius: 0.75rem;
     border: 1px solid #444;
+    /* Added padding-inline to control the inner width where form-groups live */
+    padding-inline: 1rem; /* Adjust as needed */
 }
 #lead-capture-form h2 {
     text-align: center;
@@ -423,24 +427,49 @@ body.monitor-page .container {
     margin-bottom: 1.5rem;
     color: #0044ff;
 }
+#lead-capture-form p { /* Targeting the specific paragraph for styling */
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #9ca3af; /* Using a consistent light grey from other elements */
+}
+
+
 .form-group {
     margin-bottom: 1.5rem;
+    /* Using Flexbox for more robust centering */
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center children horizontally */
+
+    /* Keep the responsive width control */
+    width: 100%; /* Make it fill the available space of its parent */
+    max-width: 450px; /* Cap its maximum width */
+    margin-left: auto; /* Still use auto margins for the .form-group itself */
+    margin-right: auto;
 }
 .form-group label {
-    display: block;
+    /* Labels are now centered by align-items: center on .form-group, but we want them left-aligned to their input */
+    align-self: flex-start; /* Override align-items: center for the label */
     margin-bottom: 0.5rem;
     font-weight: 600;
+    text-align: left; /* Explicitly keep text aligned left */
 }
 .form-group input {
-    width: 100%;
+    width: 100%; /* Important: makes the input fill the width of its parent (.form-group) */
     padding: 0.75rem 1rem;
     background-color: #000;
     border: 1px solid #333;
     border-radius: 0.5rem;
     color: white;
+    /* Ensure box-sizing is consistent */
+    box-sizing: border-box;
 }
 #submit-lead-button {
     width: 100%;
+    max-width: 450px; /* Optional: cap button width at the same max as inputs */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     padding: 0.75rem;
     font-size: 1.125rem;
     font-weight: 700;
@@ -449,6 +478,9 @@ body.monitor-page .container {
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
+}
+#submit-lead-button:hover {
+    background-color: #0033cc;
 }
 
 /* Styles for the QR code on the monitor */
