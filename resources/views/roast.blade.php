@@ -80,12 +80,6 @@
         <p>Disclaimer: This is a parody app. Gordon Ramsay isn't actually reviewing your resume, you donut 🍩 !!</p>
     </footer>
 
-    <audio id="sound-terrible" src="/audio/terrible.mp3"></audio>
-    <audio id="sound-bad" src="/audio/bad.mp3"></audio>
-    <audio id="sound-average" src="/audio/average.mp3"></audio>
-    <audio id="sound-good" src="/audio/good.mp3"></audio>
-    <audio id="sound-excellent" src="/audio/excellent.mp3"></audio>
-
     @vite('resources/js/app.js')
 </body>
 </html>
