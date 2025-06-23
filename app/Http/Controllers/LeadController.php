@@ -2,55 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LeadCaptured;
+use App\Models\Lead;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Revolution\Google\Sheets\Facades\Sheets;
+use Illuminate\Support\Facades\Log; // Add this line
+// Removed: use Revolution\Google\Sheets\Facades\Sheets; // Removed Google Sheets Facade
 
 class LeadController extends Controller
 {
     /**
-     * Store a newly created lead in storage and Google Sheets.
+     * Store a newly created lead in storage.
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:leads,email', // Added unique validation rule
             'job_title' => 'nullable|string|max:255',
         ]);
 
         try {
-            // --- Start Debugging Logs ---
-            $sheetId = env('GOOGLE_SHEET_ID');
-            $credentialsPath = config('sheets.service_account_credentials_json');
+            // Check if a lead with this email already exists and create if not
+            $lead = Lead::firstOrCreate(
+                ['email' => $validated['email']],
+                [
+                    'name' => $validated['name'],
+                    'job_title' => $validated['job_title'] ?? '',
+                ]
+            );
 
-            Log::info('--- Google Sheets Debug ---');
-            Log::info('Attempting to write to Google Sheet.');
-            Log::info('Sheet ID from .env: ' . ($sheetId ? $sheetId : 'NULL - Please check GOOGLE_SHEET_ID in your .env file.'));
-            Log::info('Credentials Path from config: ' . ($credentialsPath ? $credentialsPath : 'NULL - Please check your .env and config/sheets.php files.'));
-            // --- End Debugging Logs ---
+            // Dispatch the event after the lead is saved to the database
+            if ($lead->wasRecentlyCreated) {
+                event(new LeadCaptured($lead));
+                Log::info("LeadCaptured event dispatched for new email: {$lead->email}"); // Updated to use imported Log
+            } else {
+                Log::info("Lead with email {$lead->email} already exists. No new event dispatched."); // Updated to use imported Log
+            }
 
-            // Prepare the data row for the sheet
-            $values = [
-                $validated['name'],
-                $validated['email'],
-                $validated['job_title'] ?? '', // Use empty string if job title is null
-                now()->toDateTimeString(), // Add a timestamp for when the lead was captured
-            ];
-
-            // Append the row to the specified sheet in the Google Sheets document
-            Sheets::spreadsheet($sheetId)
-                  ->sheet('Sheet1') // Assuming your sheet is named 'Sheet1'
-                  ->append([$values]);
+            // Removed all Google Sheets API integration code
+            // The functionality to append to Google Sheets has been removed.
 
             return response()->json(['success' => true]);
 
         } catch (\Exception $e) {
-            // Log the detailed error for debugging
-            Log::error('Google Sheets API Error: ' . $e->getMessage());
+            // Log any errors that occur during the lead saving or event dispatching
+            Log::error('Lead storage or event dispatch error: ' . $e->getMessage());
             
-            // Return success to the user so they can still use the app
-            return response()->json(['success' => true]);
+            // Return an error response to the frontend
+            return response()->json(['error' => "Something went wrong while processing your lead. Please try again."], 500);
         }
     }
 }

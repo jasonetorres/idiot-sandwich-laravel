@@ -68,7 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch('/leads', {
                     method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
                     body: formData
                 });
                 const data = await response.json();

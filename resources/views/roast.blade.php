@@ -15,7 +15,6 @@
             <p>Live from Laracon!</p>
         </div>
 
-        <!-- Step 1: Lead Capture Form (Visible by default) -->
         <div id="lead-capture-section">
             <div id="lead-capture-form">
                 <h2>Get Your Resume Roasted!</h2>
@@ -39,7 +38,6 @@
             </div>
         </div>
 
-        <!-- Step 2: Resume Uploader (Hidden by default) -->
         <div id="roast-section" class="form-container" style="display: none;">
             <div class="tab-nav">
                 <button id="paste-tab" class="tab-button active">Copy & Paste</button>
@@ -57,7 +55,12 @@
             </div>
 
             <div class="button-group">
-                <button id="roastButton">ROAST IT!</button>
+                <button id="roastButton" class="
+                    bg-blue-600 text-white font-bold px-6 py-3 rounded-lg text-lg transition-all duration-200 ease-in-out
+                    relative overflow-hidden flex items-center justify-center gap-2
+                    ">
+                    <span id="roastButtonText" class="relative z-10">ROAST IT!</span>
+                </button>
             </div>
         </div>
 
@@ -68,14 +71,15 @@
 
         <div id="feedback" class="feedback-container" style="display: none;">
              <p style="text-align: center; font-size: 1.25rem; color: #4ade80;">Your roast has been served on the main screen!</p>
+             <p style="text-align: center; font-size: 1.25rem; color: #4ade80;">Here at <a href="https://torc.dev" target="_blank" rel="noopener noreferrer">torc.dev</a>, we don't just roast resumes! We're building a community and offering top-notch job services, including resume and LinkedIn optimization. Let us help you truly shine!</p>
         </div>
     </div>
 
     <footer class="footer">
         <p>Built with <a href="https://laravel.com" target="_blank" rel="noopener noreferrer">Laravel</a> for <a href="https://torc.dev" target="_blank" rel="noopener noreferrer">TORC</a> by Jason Torres &copy; 2025</p>
+        <p>Disclaimer: This is a parody app. Gordon Ramsay isn't actually reviewing your resume, you donut 🍩 !!</p>
     </footer>
 
-    <!-- Audio files for sound effects -->
     <audio id="sound-terrible" src="/audio/terrible.mp3"></audio>
     <audio id="sound-bad" src="/audio/bad.mp3"></audio>
     <audio id="sound-average" src="/audio/average.mp3"></audio>
