@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22f069792762763e89751034140d6b59",
+    "content-hash": "1573cdcb4efafd7b3b934f8325ec80e4",
     "packages": [
         {
             "name": "brick/math",
@@ -1330,16 +1330,16 @@
         },
         {
             "name": "jasontorres/cloud-view",
-            "version": "v1.0.8",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jasonetorres/cloudView.git",
-                "reference": "6fb3122e77b26188cfc464a74b7b17187a61ae43"
+                "reference": "c2d5b26decd366e7d14bd610785dbdf96c352245"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jasonetorres/cloudView/zipball/6fb3122e77b26188cfc464a74b7b17187a61ae43",
-                "reference": "6fb3122e77b26188cfc464a74b7b17187a61ae43",
+                "url": "https://api.github.com/repos/jasonetorres/cloudView/zipball/c2d5b26decd366e7d14bd610785dbdf96c352245",
+                "reference": "c2d5b26decd366e7d14bd610785dbdf96c352245",
                 "shasum": ""
             },
             "require": {
@@ -1384,9 +1384,9 @@
             "description": "GUI to view database info in laravel cloud",
             "support": {
                 "issues": "https://github.com/jasonetorres/cloudView/issues",
-                "source": "https://github.com/jasonetorres/cloudView/tree/v1.0.8"
+                "source": "https://github.com/jasonetorres/cloudView/tree/v1.1.0"
             },
-            "time": "2025-06-27T14:47:34+00:00"
+            "time": "2025-06-27T16:21:48+00:00"
         },
         {
             "name": "laravel/framework",
